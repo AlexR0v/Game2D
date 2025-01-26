@@ -136,12 +136,23 @@ public class Player extends Entity {
                 case "Key" -> {
                     hasKey++;
                     gp.obj[index] = null;
+                    gp.playSound(1);
                 }
                 case "Door" -> {
                     if (hasKey > 0) {
                         hasKey--;
                         gp.obj[index] = null;
+                        gp.playSound(3);
                     }
+                }
+                case "Boots" -> {
+                    gp.obj[index] = null;
+                    this.speed += 3;
+                    gp.playSound(2);
+                }
+                case "Chest" -> {
+                    gp.obj[index] = null;
+                    gp.playSound(4);
                 }
             }
         }
