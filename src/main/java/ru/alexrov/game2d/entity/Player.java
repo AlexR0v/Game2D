@@ -16,12 +16,16 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
+    public int hasKey = 0;
+
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
         this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
         this.solidArea = new Rectangle(10, 16, 24, 24);
+        this.solidAreaDefaultX = 10;
+        this.solidAreaDefaultY = 16;
 
         this.setDefaultValues();
         this.getPlayerImage();
@@ -63,6 +67,8 @@ public class Player extends Entity {
 
             this.collisionOn = false;
             gp.collisionDetection.detectTileCollision(this);
+            int objIndex = gp.collisionDetection.detectObjectCollision(this, true);
+            this.pickUpItem(objIndex);
 
             if (!this.collisionOn) {
                 switch (this.direction) {
@@ -121,5 +127,23 @@ public class Player extends Entity {
             }
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+
+    public void pickUpItem(int index) {
+        if (index != 999) {
+            String objectName = gp.obj[index].name;
+            switch (objectName) {
+                case "Key" -> {
+                    hasKey++;
+                    gp.obj[index] = null;
+                }
+                case "Door" -> {
+                    if (hasKey > 0) {
+                        hasKey--;
+                        gp.obj[index] = null;
+                    }
+                }
+            }
+        }
     }
 }

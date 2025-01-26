@@ -1,6 +1,7 @@
 package ru.alexrov.game2d.main;
 
 import ru.alexrov.game2d.entity.Player;
+import ru.alexrov.game2d.object.SuperObject;
 import ru.alexrov.game2d.tile.TileManager;
 
 import javax.swing.*;
@@ -10,9 +11,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     Thread gameThread;
     KeyHandler keyH = new KeyHandler();
-    public Player player = new Player(this, keyH);
     TileManager tileM = new TileManager(this);
+    public Player player = new Player(this, keyH);
     public CollisionDetection collisionDetection = new CollisionDetection(this);
+    public AssetSetter assetSetter = new AssetSetter(this);
+    public SuperObject[] obj = new SuperObject[10];
 
     final int FPS = 60;
     final int originalTileSize = 16;
@@ -37,6 +40,10 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void setupGame() {
+        assetSetter.setObject();
     }
 
     public void startGameThread() {
@@ -84,6 +91,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
         this.tileM.draw(g2);
+
+        for (SuperObject superObject : obj) {
+            if (superObject != null) {
+                superObject.draw(g2, this);
+            }
+        }
+
         this.player.draw(g2);
         g2.dispose();
     }
