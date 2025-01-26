@@ -12,6 +12,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     KeyHandler keyH = new KeyHandler();
     TileManager tileM = new TileManager(this);
+    public UI ui = new UI(this);
     public Player player = new Player(this, keyH);
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     public AssetSetter assetSetter = new AssetSetter(this);
@@ -99,6 +100,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         this.player.draw(g2);
+        this.ui.draw(g2);
         g2.dispose();
     }
 

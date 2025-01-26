@@ -87,6 +87,8 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
+        } else {
+            spriteNum = 1;
         }
     }
 
@@ -137,22 +139,29 @@ public class Player extends Entity {
                     hasKey++;
                     gp.obj[index] = null;
                     gp.playSound(1);
+                    gp.ui.showMessage("Вы нашли ключ!");
                 }
                 case "Door" -> {
                     if (hasKey > 0) {
                         hasKey--;
                         gp.obj[index] = null;
                         gp.playSound(3);
+                    } else {
+                        gp.ui.showMessage("Вам нужен ключ");
                     }
                 }
                 case "Boots" -> {
                     gp.obj[index] = null;
-                    this.speed += 3;
+                    this.speed += 2;
                     gp.playSound(2);
+                    gp.ui.showMessage("Ваша скорость увеличена!");
                 }
                 case "Chest" -> {
                     gp.obj[index] = null;
                     gp.playSound(4);
+                    gp.ui.showMessage("Вы нашли сундук!");
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();
                 }
             }
         }
